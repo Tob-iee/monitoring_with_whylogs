@@ -1,3 +1,4 @@
+import os
 import whylogs as why
 from score import run
 import pandas as pd
@@ -5,6 +6,7 @@ from whylogs.viz import NotebookProfileVisualizer
 import whylogs as why
 import matplotlib.pyplot as plt
 
+os.getcwd()
 # def monitor(wine_reference, wine_target)
 
 wine_target = pd.read_csv("occupancy_for_3days/occupancy_data_2.csv")
@@ -26,9 +28,9 @@ prof_view_ref = result_ref.view()
 visualization = NotebookProfileVisualizer()
 visualization.set_profiles(target_profile_view=prof_view, reference_profile_view=prof_view_ref)
 
-profile = visualization.profile_summary()
+profile_html = visualization.profile_summary()
 
-# why.write(profile,"profile.bin")
+visualization.write(profile_html , html_file_name=os.getcwd() + "/profile.bin")
 
 # if __name__ == '__main__':
 #     monitor()
