@@ -11,6 +11,7 @@ def read_prep_data (filename: str):
     df = pd.read_csv(filename)
 
     # features = ["Temperature", "Humidity", "Light", "CO2", "HumidityRatio"]
+    # df.multiply(100)
     dicts = df.to_dict(orient='records')
     return dicts
 

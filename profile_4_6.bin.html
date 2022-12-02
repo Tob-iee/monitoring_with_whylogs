@@ -1,0 +1,1455 @@
+<div></div><iframe srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot; /&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot; /&gt;
+    &lt;meta name=&quot;description&quot; content=&quot;&quot; /&gt;
+    &lt;meta name=&quot;author&quot; content=&quot;&quot; /&gt;
+
+    &lt;title&gt;Profile Visualizer | whylogs&lt;/title&gt;
+
+    &lt;link rel=&quot;icon&quot; href=&quot;images/whylabs-favicon.png&quot; type=&quot;image/png&quot; sizes=&quot;16x16&quot; /&gt;
+    &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot; /&gt;
+    &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin /&gt;
+    &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Asap:wght@400;500;600;700&amp;display=swap&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; /&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css&quot; /&gt;
+
+    &lt;script
+      src=&quot;https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js&quot;
+      integrity=&quot;sha512-RNLkV3d+aLtfcpEyFG8jRbnWHxUqVZozacROI4J2F1sTaDqo1dPQYs01OMi1t1w9Y2FdbSCDSQ2ZVdAC8bzgAg==&quot;
+      crossorigin=&quot;anonymous&quot;
+      referrerpolicy=&quot;no-referrer&quot;
+    &gt;&lt;/script&gt;
+
+    &lt;style type=&quot;text/css&quot;&gt;
+      :root {
+        /* CONSTANTS */
+        --SIDE-PANEL-WIDTH: 320px;
+        --PROPERTY-PANEL-WIDTH: 420px;
+
+        /* COLOR VARIABLES */
+        /** Standard colors */
+        --red: #d11010;
+        --orange: #f07028;
+        --yellow: #faaf40;
+        --olive: #b5cc18;
+        --green: #1dbb42;
+        --teal: #00b5ad;
+        --blue: #2683c9;
+        --violet: #6435c9;
+        --purple: #a333c8;
+        --pink: #ed45a4;
+        --brown: #ac724d;
+        --grey: #778183;
+        --black: #1b1c1d;
+        --white: #ffffff;
+
+        /** Branded colors */
+        --brandPrimary900: #0e7384;
+        --brandPrimary800: #228798;
+        --brandPrimary700: #369bac;
+        --brandPrimary600: #4aafc0;
+        --brandPrimary500: #5ec3d4;
+        --brandPrimary400: #72d7e8;
+        --brandPrimary300: #86ebfc;
+        --brandPrimary200: #a6f2ff;
+        --brandPrimary100: #cdf8ff;
+        --brandSecondary900: #4f595b;
+        --brandSecondary800: #636d6f;
+        --brandSecondary700: #778183;
+        --brandSecondary600: #8b9597;
+        --brandSecondary500: #9fa9ab;
+        --brandSecondary400: #b3bdbf;
+        --brandSecondary300: #c7d1d3;
+        --brandSecondary200: #dbe5e7;
+        --brandSecondary100: #ebf2f3;
+        --secondaryLight1000: #313b3d;
+        --brandRed4: #b30000;
+        --brandRed3: #d72424;
+        --brandRed2: #eb5656;
+        --brandRed1: #ff8282;
+        --night1: #021826;
+        /** Purpose colors */
+        --textColor: #4f595b;
+        --linkColor: #369bac;
+        --infoColor: #2683c9;
+        --warningColor: #faaf40;
+        --tealBackground: #eaf2f3;
+        --pageBackground: #e5e5e5;
+        --contrastTableRow: #fafafa;
+        --whiteBackground: #ffffff;
+        --primaryBackground: #e5e5e5;
+      }
+
+      /* RESET STYLE */
+      *,
+      *::after,
+      *::before {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: &quot;Asap&quot;, Arial, Helvetica, sans-serif;
+      }
+
+      /*
+      * Main content
+      */
+      .main {
+        position: relative;
+        background: #FFFFFF;
+        border: 1px solid #DBE5E7;
+        box-sizing: border-box;
+        border-radius: 4px;
+      }
+      .main .page-header {
+        margin-top: 0;
+      }
+
+      /* CSS DIV TABLE BASIC STYLE */
+
+      .wl-table-row .wl-table-head:first-child {
+        min-width: 360px;
+        z-index: 2;
+      }
+
+      .wl-table-wrap {
+        position: relative;
+      }
+
+      .wl-table {
+        display: table;
+        width: 100%;
+      }
+
+      .row&gt;* {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+      }
+
+      .wl-table-row {
+        display: table-row;
+      }
+
+      .wl-table-row:hover,
+      .wl-table-row:hover .wl-table-cell:first-child {
+        background-color: var(--brandSecondary100);
+      }
+      .wl-table-row--clickable:hover .wl-table-cell__title-button {
+        visibility: visible;
+      }
+
+      .wl-table-heading {
+        position: sticky;
+        top: 0;
+        z-index: 900;
+        display: table-header-group;
+        font-weight: 700;
+      }
+
+      .wl-table-cell,
+      .wl-table-head {
+        border-bottom: 1px solid var(--brandSecondary200);
+        display: table-cell;
+        padding: 12px 18px;
+      }
+
+      .wl-table-cell {
+        font-size: 14px;
+      }
+
+      .wl-table-cell--top-spacing {
+        padding-top: 35px; /* cell-top-padding + cell-title-height */
+      }
+
+      .wl-table-head-wraper {
+        background-color: var(--white);
+      }
+
+      .wl-table-head {
+        position: relative;
+        left: 0;
+        min-width: 100px;
+        border-bottom: 2px solid var(--brandSecondary100);
+        font-size: 12px;
+        line-height: 1.67;
+        white-space: nowrap;
+      }
+
+      .wl-sub-table-head {
+        position: relative;
+      }
+
+      .wl-table-body {
+        display: table-row-group;
+      }
+
+      .wl-table-row .wl-table-cell:first-child{
+        position: relative;
+        left: 0;
+        background-color: var(--white);
+        border-right-width: 2px;
+      }
+
+      /* Table custom style */
+
+      .wl-table-cell__title-wrap {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .wl-table-cell__title {
+        height: 25px;
+        margin: 0;
+        font-size: 14px;
+        font-weight: 700;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .wl-table-cell__bedge-wrap {
+        padding: 2px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        font-style: italic;
+        text-align: center;
+        color: var(--brandSecondary400);
+      }
+      .wl-table-cell__bedge {
+        height: 24px;
+        margin: 1px;
+        padding: 2px 8px;
+        border: 1px solid var(--brandSecondary400);
+        font-style: normal;
+        color: var(--brandSecondary900);
+        border-radius: 20px;
+        white-space: nowrap;
+      }
+
+      /* Property side panel */
+
+      .wl-compare-profile {
+        position: relative;
+        left: 0;
+        padding: 18px;
+        background: var(--white);;
+        border-bottom: 1px solid var(--brandSecondary200);
+      }
+
+      /* Screen on smaller screens */
+      .no-responsive {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1031;
+        width: 100vw;
+        height: 100vh;
+        background-color: var(--tealBackground);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .no-responsive__content {
+        max-width: 600px;
+        width: 100%;
+        padding: 0 24px;
+      }
+
+      .no-responsive__title {
+        font-size: 96px;
+        font-weight: 300;
+        color: var(--brandSecondary900);
+        line-height: 1.167;
+      }
+
+      .no-responsive__text {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 400;
+        color: var(--brandSecondary900);
+        line-height: 1.5;
+      }
+
+      .space-between {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .align-items {
+        display: flex;
+        align-items: center;
+      }
+
+      .display-flex{
+        display: flex;
+      }
+
+      .table-border-none {
+        padding: 0;
+        border: none;
+      }
+
+      .flex-direction-colum {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .align-items {
+        align-items: center;
+      }
+
+      .search-input{
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+      }
+
+      .search-input input{
+        border: none;
+        background: none;
+        outline: none;
+        height: 40px;
+        width: 100%;
+        font-size: 14px;
+      }
+
+      .search-input img{
+        height: 19px;
+        pointer-events: none;
+      }
+
+      input::placeholder {
+        color: var(--secondaryLight1000);
+      }
+
+      .text-align-center {
+        text-align: center;
+      }
+
+      .text-align-end {
+        text-align: end;
+      }
+
+      .drift-detection {
+        justify-content: space-between;
+        align-items: center;
+      }
+
+     .drift-detection-info-circle {
+       width: 15px;
+       height: 15px;
+       border-radius: 50px;
+       display: inline-block;
+       margin-right: 8px;
+     }
+
+     .severe-drift-circle-color {
+         background: #D40D00;
+     }
+
+     .moderate-drift-circle-color {
+         background: #F5843C;
+     }
+
+     .mild-drift-circle-color {
+         background: #F2C142;
+     }
+
+     .minimal-drift-circle-color {
+         background: #ABCA52;
+     }
+
+     .drift-detection-info-drifts-item {
+         padding-right: 20px;
+     }
+
+     .drift-detection-info-title {
+       font-family: Arial;
+       font-weight: bold;
+       font-size: 16px;
+       line-height: 130%;
+       color: #313B3D;
+     }
+
+     .drift-detection-info-drifts-item-count {
+       font-family: Arial;
+       font-weight: bold;
+       font-size: 14px;
+       line-height: 16px;
+       color: #000000;
+       padding-right: 8px;
+     }
+
+     .drift-detection-info-drifts-item-name {
+       font-family: Arial;
+       font-style: normal;
+       font-weight: normal;
+       font-size: 12px;
+       line-height: 14px;
+       color: #000000;
+     }
+
+     .drift-detection-info-drifts-item-range {
+       font-family: Arial;
+       font-style: normal;
+       font-weight: normal;
+       font-size: 11px;
+       line-height: 13px;
+       color: #6C757D;
+     }
+
+     .drift-detection-search-input {
+       display: flex;
+       align-items: center;
+       background: rgba(255, 255, 255, 0.7);
+       border: 1px solid #DBE5E7;
+       box-sizing: border-box;
+       border-radius: 4px;
+       width: 170px;
+       padding-left: 10px;
+     }
+
+     .drift-detection-search-input img{
+       margin-right: 5px;
+     }
+
+     .drift-detection-search-input input::placeholder {
+       font-family: Arial;
+       font-weight: normal;
+       font-size: 13px;
+       line-height: 16px;
+       color: #313B3D;
+     }
+
+     .close-filter-button {
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       background: rgba(255, 255, 255, 0.7);
+       border: 1px solid #369BAC;
+       box-sizing: border-box;
+       border-radius: 4px;
+       width: 40px;
+       height: 40px;
+       cursor: pointer;
+       margin-left: 10px;
+     }
+
+     .filter-options-title {
+       width: 240px;
+     }
+
+     .filter-options-title p {
+       margin: 0;
+     }
+
+     .dropdown-container {
+       position: absolute;
+       right: 18px;
+       z-index: 999;
+       background: #FFFFFF;
+       border: 1px solid #DBE5E7;
+       box-sizing: border-box;
+       box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+       border-radius: 4px;
+       padding: 10px !important;
+       border: none !important;
+     }
+
+     .form-check-input:checked {
+       background-color: #0E7384;
+       border-color: #0E7384;
+     }
+
+     .form-check-input[type=checkbox] {
+       border-radius: 2px;
+     }
+
+      .justify-content-center {
+        justify-content: center;
+      }
+
+      .wl-table-cell__graph-wrap {
+        width: 0;
+      }
+
+      .svg-container {
+        display: inline-block;
+        position: relative;
+        width: 85%;
+        padding-bottom: 17%;
+        vertical-align: top;
+        overflow: hidden;
+      }
+
+      .svg-content-responsive {
+        display: inline-block;
+        position: absolute;
+        left: 0;
+      }
+
+      .reference-table-head {
+        min-width: 250px;
+      }
+
+      .wl__dropdown_arrow-icon {
+        position: relative;
+      }
+
+      .notif-circle-container{
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        padding: 5.3px;
+        border-radius: 50%;
+        background-color: white;
+        cursor: pointer;
+      }
+
+      .notif-circle {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        padding: 3.3px;
+        border-radius: 50%;
+        background-color: #F2994A;
+      }
+
+
+      .header-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #444444;
+      }
+
+      .statistic-number-title {
+        font-family: Arial;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        color: #6C757D;
+      }
+
+      .statistic-number {
+        font-family: Arial;
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 140%;
+        display: flex;
+        align-items: center;
+        color: #0E7384;
+      }
+
+      .statistic-measurement {
+        font-size: 15px !important;
+        margin-left: 3px;
+      }
+
+      .statistic-measurement-percent {
+        font-size: 15px !important;
+      }
+
+      .question-mark {
+        font-size: 10px;
+        font-weight: 900;
+        color: #0E7384;
+        border-radius: 50px;
+        border: 2px solid #0E7384;
+        padding: 0px 4px;
+        transition: 0.5s;
+        cursor: pointer;
+      }
+
+      .question-mark:hover {
+        color: white;
+        background: #0E7384;
+        border: 2px solid none;
+        transition: 0.5s;
+      }
+
+      .tooltip-full-number {
+        position: relative;
+        display: inline-block;
+      }
+
+      .tooltip-full-number .tooltiptext {
+        visibility: hidden;
+        background: black;
+        color: white;
+        border: 1px solid black;
+        text-align: start;
+        padding: 3px;
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 100%;
+        margin-left: 5px;
+        opacity: 0;
+        transition: opacity 0.5s;
+        font-size: 13px;
+        font-weight: normal;
+        line-height: 100%;
+      }
+
+      .tooltip-full-number:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .display-flex {
+        display: flex;
+      }
+
+      .flex-direction-column {
+        flex-direction: column;
+      }
+
+      .justify-content-space-between {
+        justify-content: space-between;
+      }
+
+      .justify-content-center {
+        justify-content: center;
+      }
+
+      .align-items-center {
+        align-items: center;
+      }
+
+      .padding-right-30 {
+        padding-right: 30px;
+      }
+
+      .padding-5 {
+        padding: 5px;
+      }
+
+      .text-color {
+        color: var(--secondaryLight1000);
+      }
+
+      .error-message {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: rgb(255, 114, 71);
+        font-size: 30px;
+        font-weight: 900;
+      }
+
+      @media screen and (min-width: 500px) {
+        .desktop-content {
+          display: block;
+        }
+        .no-responsive {
+          display: none;
+        }
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+
+  &lt;body id=&quot;generated-html&quot;&gt;&lt;/body&gt;
+
+  &lt;script id=&quot;entry-template&quot; type=&quot;text/x-handlebars-template&quot;&gt;
+    
+      &lt;div class=&quot;desktop-content&quot;&gt;
+        &lt;div class=&quot;container-fluid&quot;&gt;
+          &lt;div class=&quot;feature-summary-statistics-wrap&quot;&gt;
+            &lt;div class=&quot;feature-summary-statistics&quot;&gt;
+              &lt;div class=&quot;mb-4&quot;&gt;
+                  &lt;strong class=&quot;header-title&quot;&gt;Profile Summary&lt;/strong&gt;
+              &lt;/div&gt;
+              &lt;div class=&quot;display-flex statistics&quot;&gt;
+                  &lt;div class=&quot;padding-right-30&quot;&gt;
+                    &lt;div class=&quot;statistic-number-title&quot;&gt;Observations&lt;/div&gt;
+                    &lt;div class=&quot;statistic-number&quot;&gt;{{{observations this}}}&lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;div class=&quot;padding-right-30&quot;&gt;
+                    &lt;div class=&quot;statistic-number-title&quot;&gt;Missing Cells&lt;/div&gt;
+                    &lt;div class=&quot;statistic-number&quot;&gt;
+                      {{{missingCells this}}}
+                      &lt;div&gt;{{{missingCellsPercentage this}}}&lt;/div&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;row&quot;&gt;
+            &lt;div class=&quot;main&quot;&gt;
+              &lt;div class=&quot;wl-compare-profile&quot; id=&quot;compare-profile&quot;&gt;
+               &lt;div class=&quot;drift-detection-wrap&quot;&gt;
+                 &lt;div class=&quot;drift-detection display-flex&quot;&gt;
+                   &lt;div class=&quot;drift-detection-info flex-direction-colum&quot;&gt;
+                     &lt;div class=&quot;drift-detection-info-title-wrap display-flex&quot;&gt;
+                       &lt;p class=&quot;drift-detection-info-title&quot;&gt;
+                         Drift detected in
+                         &lt;span class=&quot;drift-count&quot;&gt;&lt;/span&gt;
+                         of
+                         &lt;span class=&quot;all-features&quot;&gt;&lt;/span&gt;
+                         features
+                       &lt;/p&gt;
+                     &lt;/div&gt;
+                     &lt;div class=&quot;drift-detection-info-drifts display-flex&quot; id=&quot;drift-detection-info-drifts&quot;&gt;
+                     &lt;/div&gt;
+                   &lt;/div&gt;
+                   &lt;div class=&quot;drift-detection-search-input-wrap display-flex&quot;&gt;
+                     &lt;div class=&quot;drift-detection-search-input search-input&quot;&gt;
+                       &lt;input type=&quot;text&quot; id=&quot;wl__feature-search&quot; placeholder=&quot;Quick search...&quot;/&gt;
+                       &lt;img src=&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGdSURBVHgBpZK7TkJBEIZnZoVocdTYyQNALxpNKPQBMEaNJsbCRMKhl8ISWwt6AaksCF5iTHgAGhJD4AHkAaAzGiwUsjvOQnO4SYh/cXbPzO43OxcEj9Zy92EiFSXNIfvPyE1kKFfdoxJMENpP6DrvLC0vJoEwCgwto7DWcxoIIHBYbA3NmKwnDltjAeuZhyul1DaTTlfPB6Nt5Z53DOgky4P875+nlctY2+unjZviLklkJhi5bPUa3y/7qJuQUM7PinMy7CdQc1Gh16vnBxPzrMROmlKQEgKNASAHLQCmSIGpS75O+O5pdQAgVXaIqTkNwDDXHmcnW3VmHZoGMLoTsOt88+NrAMCIZdu+iLTyTwKRa1Md6YKfOgXbzO7K8sWku5u5RxcRV5EpPezrzcHGbXEXWaUkgkweZ/UC9YrK3zqggFw5FBZfm8EUavHj7AjAKpIvBDrGn+pNnlcyhYgqbcC41idr1gvB4SdZkDbzQa21gwv0Vj07aPTtL07XdDOyDXohCDNoHIRmAVRie20f+RKybRDQDvxHkXy/7b/DrayncLbMwQAAAABJRU5ErkJggg==&quot;/&gt;
+                     &lt;/div&gt;
+                     &lt;div class=&quot;wl__dropdown_arrow-icon&quot;&gt;
+                       &lt;div onclick=&quot;openFilter()&quot; class=&quot;close-filter-button&quot;&gt;
+                         &lt;div class=&quot;display-flex close-filter-icon d-none&quot;&gt;
+                           &lt;img src=&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAALCAYAAACprHcmAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADFSURBVHgBfY+xDcIwEEXvnLQBZQkYAEhDwwKpEEK0CCZgAEjJCEmgjYSAygxAHTZgFRSOsyUjY5mcZFnn/+78PwBXf3+MoKWUPuYjVBPFnTwpr9t/oNJfcTfXsAhRAlDqDhhQIPYgpAqNMDqcUqSAYZT1epr9gAHt6uXshvYme4DYHQJNDKh0dD0m5WXB10Y3Fqjtuh7fROn3oREDWxfeMLyRsMnc0OgDzdduaA0Pi3Plgr7Q2kaAePeBqh6rueSNBVt6fgCwBV1JLF3rlAAAAABJRU5ErkJggg==&quot;/&gt;
+                         &lt;/div&gt;
+                         &lt;div class=&quot;display-flex filter-icon&quot;&gt;
+                           &lt;img src=&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAPCAYAAADtc08vAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACSSURBVHgBrZLBCYAwDEWTUjw7igcdwI1cxkNXUJzBEVzFAbSVKoKmaVrEB6GHJv/w+AACtRk7P9IONv1QOYUl96k0zv61m2tjARoLtSDI3EFsgIJ4uoXrMLazO72CRG2mzg/8BSdVlEjhpGZJjAWdAZJECpWalEhJSs1pHuUlMad5FFai1Lwg4Ckx1TxKIPFL8w55mEWd8VjPGAAAAABJRU5ErkJggg==&quot;/&gt;
+                         &lt;/div&gt;
+                       &lt;/div&gt;
+                       &lt;span class=&quot;notif-circle-container&quot;&gt;
+                         &lt;span class=&quot;notif-circle&quot;&gt;&lt;/span&gt;
+                       &lt;/span&gt;
+                     &lt;/div&gt;
+                   &lt;/div&gt;
+                 &lt;/div&gt;
+               &lt;/div&gt;
+               &lt;div class=&quot;dropdown-container flex-direction-colum mb-2 d-none&quot; id=&quot;dropdown-container&quot;&gt;
+                 &lt;div class=&quot;filter-options&quot;&gt;
+                   &lt;div class=&quot;filter-options-title space-between dropdown&quot;&gt;
+                     &lt;p&gt;Filter by type&lt;/p&gt;
+                   &lt;/div&gt;
+                   &lt;div class=&quot;form-check mb-1 mt-2&quot;&gt;
+                     &lt;input
+                       class=&quot;form-check-input wl__feature-filter-input&quot;
+                       type=&quot;checkbox&quot;
+                       name=&quot;checkbox&quot;
+                       value=&quot;Discrete&quot;
+                       id=&quot;inferredDiscrete&quot;
+                       onclick=&quot;changeDiscreteValue()&quot;
+                       checked
+                     /&gt;
+                     &lt;label class=&quot;form-check-label&quot; for=&quot;inferredDiscrete&quot;&gt;
+                       Inferred discrete (&lt;span class=&quot;wl__feature-count--discrete&quot;&gt;{{getDiscreteTypeCount}}&lt;/span&gt;)
+                     &lt;/label&gt;
+                   &lt;/div&gt;
+                   &lt;div class=&quot;form-check mb-1&quot;&gt;
+                     &lt;input
+                       class=&quot;form-check-input wl__feature-filter-input&quot;
+                       type=&quot;checkbox&quot;
+                       name=&quot;checkbox&quot;
+                       value=&quot;Non-discrete&quot;
+                       id=&quot;inferredNonDiscrete&quot;
+                       onclick=&quot;changeNonDiscreteValue()&quot;
+                       checked
+                     /&gt;
+                     &lt;label class=&quot;form-check-label&quot; for=&quot;inferredNonDiscrete&quot;&gt;
+                       Inferred non-discrete (&lt;span
+                         class=&quot;wl__feature-count--non-discrete&quot;
+                       &gt;{{getNonDiscreteTypeCount}}&lt;/span&gt;)
+                     &lt;/label&gt;
+                   &lt;/div&gt;
+                   &lt;div class=&quot;form-check mb-1&quot;&gt;
+                     &lt;input
+                       class=&quot;form-check-input wl__feature-filter-input&quot;
+                       type=&quot;checkbox&quot;
+                       name=&quot;checkbox&quot;
+                       value=&quot;Unknown&quot;
+                       id=&quot;inferredUnknown&quot;
+                       onclick=&quot;changeUnknwonValue()&quot;
+                       checked
+                     /&gt;
+                     &lt;label class=&quot;form-check-label&quot; for=&quot;inferredUnknown&quot;&gt;
+                       Unknown (&lt;span class=&quot;wl__feature-count--unknown&quot;&gt;{{getUnknownTypeCount}}&lt;/span&gt;)
+                     &lt;/label&gt;
+                   &lt;/div&gt;
+                 &lt;/div&gt;
+               &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div class=&quot;wl-table-wrap&quot; id=&quot;table-content&quot;&gt;
+                &lt;div class=&quot;wl-table&quot;&gt;
+                  &lt;div class=&quot;wl-table-heading&quot;&gt;
+                    &lt;div class=&quot;wl-table-row wl-table-row--bottom-shadow&quot;&gt;
+                      &lt;div class=&quot;wl-table-head wl-table-head-wraper&quot;&gt;
+                        &lt;div class=&quot;wl-table-head table-border-none graph-table-head&quot;&gt;Target&lt;/div&gt;
+                        &lt;div class=&quot;wl-table-head table-border-none reference-table-head&quot;&gt;Reference&lt;/div&gt;
+                      &lt;/div&gt;
+                      &lt;div class=&quot;wl-table-head wl-table-head-wraper text-align-end&quot; style=&quot;cursor: pointer;&quot; id=&quot;diff-from-ref&quot;&gt;
+                        &lt;p id=&quot;pvalue&quot; &gt; p-value &lt;/p&gt;
+                        &lt;p id=&quot;pvalue-asc&quot; style=&quot;display: none;&quot;&gt; p-value &amp;#9650 &lt;/p&gt;
+                        &lt;p id=&quot;pvalue-desc&quot; style=&quot;display: none;&quot;&gt; p-value &amp;#9660 &lt;/p&gt;
+
+                        &lt;div class=&quot;tooltip-full-number&quot;&gt;
+                            &lt;span class=&quot;question-mark&quot;&gt;?&lt;/span&gt;
+                          &lt;span class=&quot;tooltiptext&quot;&gt;
+                           &lt;div class=&quot;mb-1&quot;&gt;p-values are calculated with K-S test for numerical features and Chi-squared for categorical features.&lt;/div&gt;
+                          &lt;/span&gt;
+                        &lt;/div&gt;
+                      &lt;/div&gt;
+                      &lt;div class=&quot;wl-table-head wl-table-head-wraper text-align-end&quot;&gt;Total count&lt;/div&gt;
+                      &lt;div class=&quot;wl-table-head wl-table-head-wraper text-align-end&quot;&gt;Mean&lt;/div&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;ul class=&quot;wl-table-body wl__table-body&quot; id=&quot;table-body&quot;&gt;
+{{#each this.columns}}                    &lt;li
+                    {{#if this.numberSummary}} class=&quot;wl-table-row wl-table-row--clickable&quot; {{else}} class=&quot;wl-table-row&quot; {{/if}}
+                    data-feature-name={{@key}}
+                    data-inferred-type={{inferredType this}}
+                    data-scroll-to-feature-name={{@key}}
+                    data-p-value={{getpvalue this}}
+                  &gt;
+                      &lt;div class=&quot;wl-table-cell wl-table-cell__graph-wrap&quot;&gt;
+                        &lt;div class=&quot;wl-table-cell__title-wrap&quot;&gt;
+                          &lt;h4 class=&quot;wl-table-cell__title&quot;&gt;{{@key}}&lt;/h4&gt;
+                          &lt;div&gt;&lt;/div&gt;
+                        &lt;/div&gt;
+                          &lt;div class=&quot;display-flex&quot;&gt;
+                              {{{getGraphHtml this}}}
+                              {{{getReferenceGraphHtml this}}}
+                          &lt;/div&gt;
+                      &lt;/div&gt;
+                      &lt;div
+                        class=&quot;diff-from-ref-table-cell wl-table-cell wl-table-cell--top-spacing align-middle&quot;
+                        style=&quot;max-width: 270px; padding-right: 18px&quot;
+                      &gt;&lt;div class=&quot;wl-table-cell__bedge-wrap text-align-end&quot;&gt;
+                           {{{getDiffFromRef this}}}
+                        &lt;/div&gt;&lt;/div&gt;&lt;div
+                        class=&quot;wl-table-cell wl-table-cell--top-spacing align-middle&quot;
+                      &gt;&lt;div class=&quot;text-align-end&quot;&gt;{{totalCount this}}&lt;/div&gt;&lt;/div&gt;&lt;div
+                        class=&quot;wl-table-cell wl-table-cell--top-spacing align-middle&quot;
+                      &gt;&lt;div class=&quot;text-align-end&quot;&gt;{{mean this}}&lt;/div&gt;&lt;/div&gt;
+                    &lt;/li&gt;
+{{/each}}                  &lt;/ul&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;no-responsive&quot;&gt;
+        &lt;div class=&quot;no-responsive__content&quot;&gt;
+          &lt;h1 class=&quot;no-responsive__title&quot;&gt;Hold on! :)&lt;/h1&gt;
+          &lt;p class=&quot;no-responsive__text&quot;&gt;
+            It looks like your current screen size or device is not yet supported by the WhyLabs Sandbox. The Sandbox is
+            best experienced on a desktop computer. Please try maximizing this window or switching to another device. We
+            are working on adding support for a larger variety of devices.
+          &lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    
+  &lt;/script&gt;
+
+  &lt;script src=&quot;https://code.jquery.com/jquery-3.6.0.min.js&quot; integrity=&quot;sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+
+  &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/d3/6.7.0/d3.min.js&quot; integrity=&quot;sha512-cd6CHE+XWDQ33ElJqsi0MdNte3S+bQY819f7p3NUHgwQQLXSKjE4cPZTeGNI+vaxZynk1wVU3hoHmow3m089wA==&quot; crossorigin=&quot;anonymous&quot; referrerpolicy=&quot;no-referrer&quot;&gt;&lt;/script&gt;
+
+  &lt;script&gt;
+    const getReferenceProfile = () =&gt; { return {&quot;columns&quot;: {&quot;Temperature&quot;: {&quot;histogram&quot;: {&quot;start&quot;: 20.6, &quot;end&quot;: 23.760002376000003, &quot;width&quot;: 0, &quot;counts&quot;: [73, 53, 65, 23, 39, 16, 10, 9, 16, 5, 5, 7, 6, 5, 8, 8, 17, 5, 59, 21, 8, 9, 16, 6, 16, 12, 11, 9, 26, 18], &quot;max&quot;: 23.76, &quot;min&quot;: 20.6, &quot;bins&quot;: [20.6, 20.705333412533335, 20.81066682506667, 20.916000237600002, 21.021333650133336, 21.12666706266667, 21.232000475200003, 21.337333887733337, 21.442667300266667, 21.5480007128, 21.653334125333334, 21.758667537866668, 21.8640009504, 21.969334362933335, 22.07466777546667, 22.180001188000002, 22.285334600533336, 22.39066801306667, 22.496001425600003, 22.601334838133337, 22.70666825066667, 22.812001663200004, 22.917335075733334, 23.022668488266667, 23.1280019008, 23.233335313333335, 23.33866872586667, 23.444002138400002, 23.549335550933336, 23.65466896346667, 23.760002376000003], &quot;n&quot;: 581}, &quot;frequentItems&quot;: null, &quot;drift_from_ref&quot;: 1.5359735924514858e-44, &quot;isDiscrete&quot;: false, &quot;featureStats&quot;: null}, &quot;Humidity&quot;: {&quot;histogram&quot;: {&quot;start&quot;: 22.2, &quot;end&quot;: 29.0750029075, &quot;width&quot;: 0, &quot;counts&quot;: [74, 50, 23, 38, 35, 26, 21, 21, 21, 12, 23, 35, 39, 9, 6, 3, 4, 12, 7, 7, 6, 8, 9, 13, 12, 21, 10, 15, 14, 7], &quot;max&quot;: 29.075, &quot;min&quot;: 22.2, &quot;bins&quot;: [22.2, 22.429166763583332, 22.658333527166665, 22.887500290749998, 23.116667054333334, 23.345833817916667, 23.5750005815, 23.804167345083332, 24.033334108666665, 24.26250087225, 24.491667635833334, 24.720834399416667, 24.950001163, 25.179167926583332, 25.408334690166665, 25.637501453749998, 25.866668217333334, 26.095834980916667, 26.3250017445, 26.554168508083333, 26.783335271666665, 27.01250203525, 27.24166879883333, 27.470835562416667, 27.700002326, 27.929169089583333, 28.158335853166665, 28.387502616749998, 28.616669380333335, 28.845836143916667, 29.0750029075], &quot;n&quot;: 581}, &quot;frequentItems&quot;: null, &quot;drift_from_ref&quot;: 1.301836978069432e-94, &quot;isDiscrete&quot;: false, &quot;featureStats&quot;: null}, &quot;Light&quot;: {&quot;histogram&quot;: {&quot;start&quot;: 0.0, &quot;end&quot;: 585.2000585200001, &quot;width&quot;: 0, &quot;counts&quot;: [355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 57, 83, 41, 20, 9, 8, 3, 0, 4], &quot;max&quot;: 585.2, &quot;min&quot;: 0.0, &quot;bins&quot;: [0.0, 19.506668617333336, 39.01333723466667, 58.52000585200001, 78.02667446933334, 97.53334308666668, 117.04001170400002, 136.54668032133335, 156.0533489386667, 175.56001755600002, 195.06668617333335, 214.57335479066668, 234.08002340800005, 253.58669202533338, 273.0933606426667, 292.60002926000004, 312.1066978773334, 331.6133664946667, 351.12003511200004, 370.62670372933337, 390.1333723466667, 409.64004096400004, 429.14670958133337, 448.6533781986667, 468.1600468160001, 487.6667154333334, 507.17338405066675, 526.680052668, 546.1867212853334, 565.6933899026667, 585.2000585200001], &quot;n&quot;: 581}, &quot;frequentItems&quot;: null, &quot;drift_from_ref&quot;: 0.0009193649001387901, &quot;isDiscrete&quot;: false, &quot;featureStats&quot;: null}, &quot;CO2&quot;: {&quot;histogram&quot;: {&quot;start&quot;: 443.0, &quot;end&quot;: 1176.1667842833365, &quot;width&quot;: 0, &quot;counts&quot;: [113, 62, 32, 33, 17, 17, 13, 14, 9, 6, 10, 9, 9, 21, 16, 33, 22, 9, 10, 11, 6, 10, 9, 11, 9, 17, 18, 17, 8, 10], &quot;max&quot;: 1176.16666666667, &quot;min&quot;: 443.0, &quot;bins&quot;: [443.0, 467.43889280944455, 491.8777856188891, 516.3166784283336, 540.7555712377782, 565.1944640472227, 589.6333568566673, 614.0722496661118, 638.5111424755564, 662.9500352850009, 687.3889280944455, 711.82782090389, 736.2667137133346, 760.7056065227791, 785.1444993322236, 809.5833921416682, 834.0222849511129, 858.4611777605573, 882.9000705700018, 907.3389633794465, 931.7778561888911, 956.2167489983356, 980.6556418077801, 1005.0945346172247, 1029.5334274266693, 1053.9723202361138, 1078.4112130455583, 1102.8501058550028, 1127.2889986644473, 1151.727891473892, 1176.1667842833365], &quot;n&quot;: 581}, &quot;frequentItems&quot;: null, &quot;drift_from_ref&quot;: 2.666204314180554e-26, &quot;isDiscrete&quot;: false, &quot;featureStats&quot;: null}, &quot;HumidityRatio&quot;: {&quot;histogram&quot;: {&quot;start&quot;: 0.0033252058118989, &quot;end&quot;: 0.005087593326771482, &quot;width&quot;: 0, &quot;counts&quot;: [67, 59, 37, 35, 31, 26, 18, 15, 17, 8, 8, 9, 10, 19, 21, 39, 9, 6, 6, 5, 4, 4, 4, 3, 11, 13, 24, 9, 27, 37], &quot;max&quot;: 0.0050875928180122, &quot;min&quot;: 0.0033252058118989, &quot;bins&quot;: [0.0033252058118989, 0.0033839520623946528, 0.0034426983128904055, 0.0035014445633861583, 0.003560190813881911, 0.003618937064377664, 0.0036776833148734166, 0.0037364295653691693, 0.003795175815864922, 0.003853922066360675, 0.003912668316856428, 0.00397141456735218, 0.004030160817847933, 0.004088907068343686, 0.004147653318839439, 0.004206399569335191, 0.004265145819830944, 0.004323892070326697, 0.00438263832082245, 0.004441384571318202, 0.004500130821813955, 0.004558877072309707, 0.00461762332280546, 0.004676369573301213, 0.004735115823796965, 0.004793862074292718, 0.004852608324788471, 0.004911354575284224, 0.004970100825779976, 0.005028847076275729, 0.005087593326771482], &quot;n&quot;: 581}, &quot;frequentItems&quot;: null, &quot;drift_from_ref&quot;: 1.0424689249598657e-66, &quot;isDiscrete&quot;: false, &quot;featureStats&quot;: null}, &quot;Occupancy&quot;: {&quot;histogram&quot;: {&quot;start&quot;: 0.0, &quot;end&quot;: 1.0000001, &quot;width&quot;: 0, &quot;counts&quot;: [378, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 203], &quot;max&quot;: 1.0, &quot;min&quot;: 0.0, &quot;bins&quot;: [0.0, 0.03333333666666667, 0.06666667333333334, 0.10000001000000001, 0.13333334666666669, 0.16666668333333334, 0.20000002000000003, 0.2333333566666667, 0.26666669333333337, 0.30000003000000003, 0.3333333666666667, 0.3666667033333334, 0.40000004000000006, 0.4333333766666667, 0.4666667133333334, 0.50000005, 0.5333333866666667, 0.5666667233333335, 0.6000000600000001, 0.6333333966666668, 0.6666667333333334, 0.7000000700000001, 0.7333334066666668, 0.7666667433333334, 0.8000000800000001, 0.8333334166666668, 0.8666667533333334, 0.9000000900000001, 0.9333334266666669, 0.9666667633333335, 1.0000001], &quot;n&quot;: 581}, &quot;frequentItems&quot;: null, &quot;drift_from_ref&quot;: 0.7833415203773524, &quot;isDiscrete&quot;: false, &quot;featureStats&quot;: null}}, &quot;properties&quot;: {&quot;observations&quot;: 23358, &quot;missing_cells&quot;: 0, &quot;missing_percentage&quot;: 0.0}} }
+    const referenceProfile = getReferenceProfile()
+
+    function fixNumberTo(number, decimals = 3) {
+      const fractionalDigits = String(number % 1).split(&#x27;&#x27;).slice(2, 2 + decimals).join(&#x27;&#x27;)
+      return `${Math.trunc(number)}.${fractionalDigits}`
+    }
+
+    function registerHandlebarHelperFunctions() {
+      //helper fun
+
+      class GenerateChartParams {
+        constructor(height, width, data, bottomMargin=20, topMargin=5) {
+          this.MARGIN = {
+            TOP: topMargin,
+            RIGHT: 5,
+            BOTTOM: bottomMargin,
+            LEFT: 55,
+          };
+          this.SVG_WIDTH = width;
+          this.SVG_HEIGHT = height;
+          this.CHART_WIDTH = this.SVG_WIDTH - this.MARGIN.LEFT - this.MARGIN.RIGHT;
+          this.CHART_HEIGHT = this.SVG_HEIGHT - this.MARGIN.TOP - this.MARGIN.BOTTOM;
+          this.svgEl = d3.create(&quot;svg&quot;)
+             .attr(&quot;preserveAspectRatio&quot;, &quot;xMinYMin meet&quot;)
+             .attr(&quot;viewBox&quot;, &quot;30 0 240 400&quot;)
+             .classed(&quot;svg-content-responsive&quot;, true)
+          this.maxYValue = d3.max(data, (d) =&gt; Math.abs(d.axisY));
+          this.xScale = d3
+            .scaleBand()
+            .domain(data.map((d) =&gt; d.axisX))
+            .range([this.MARGIN.LEFT, this.MARGIN.LEFT + this.CHART_WIDTH]);
+          this.yScale = d3
+            .scaleLinear()
+            .domain([0, this.maxYValue * 1.02])
+            .range([this.CHART_HEIGHT, 0]);
+        }
+      }
+
+      function generateChart(data, height = 70, width = 250, index = 0, referenceProfileExist = false) {
+        const sizes = new GenerateChartParams(height, width, data, 5)
+        const {
+          MARGIN,
+          SVG_WIDTH,
+          SVG_HEIGHT,
+          CHART_WIDTH,
+          CHART_HEIGHT,
+          svgEl,
+          maxYValue,
+          xScale,
+          yScale
+        } = sizes
+        const rectColors = [&quot;#44C0E7&quot;, &quot;#F5843C&quot;]
+
+        // Add the y Axis
+        if (!referenceProfileExist) {
+          svgEl
+            .append(&quot;g&quot;)
+            .attr(&quot;transform&quot;, &quot;translate(&quot; + MARGIN.LEFT + &quot;, &quot; + MARGIN.TOP + &quot;)&quot;)
+            .call(d3.axisLeft(yScale).tickValues([0, maxYValue/2, maxYValue]))
+            .selectAll(&quot;text&quot;)
+            .style(&quot;font-size&quot;, &quot;8&quot;)
+        }
+
+        const gChart = svgEl.append(&quot;g&quot;);
+        gChart
+          .attr(&quot;transform&quot;, &quot;translate(&quot; + 20 + &quot;, &quot; + 0 + &quot;)&quot;)
+          .selectAll(&quot;.bar&quot;)
+          .data(data)
+          .enter()
+          .append(&quot;rect&quot;)
+          .classed(&quot;bar&quot;, true)
+          .attr(&quot;width&quot;, xScale.bandwidth() - 1)
+          .attr(&quot;height&quot;, (d) =&gt; CHART_HEIGHT - yScale(d.axisY))
+          .attr(&quot;x&quot;, (d) =&gt; xScale(d.axisX))
+          .attr(&quot;y&quot;, (d) =&gt; yScale(d.axisY) + MARGIN.TOP)
+          .attr(&quot;fill&quot;, rectColors[index]);
+
+        return svgEl._groups[0][0].outerHTML;
+      }
+
+      function chartData(column) {
+        const data = [];
+        if (column.histogram) {
+          column.histogram.counts.slice(0, 30).forEach((count, index) =&gt; {
+            data.push({
+              axisY: count,
+              axisX: index,
+            });
+          });
+        } else if (column.frequentItems) {
+          Object.entries(column.frequentItems).forEach(([key, {value, estimate}], index) =&gt; {
+              data.push({
+                axisY: estimate,
+                axisX: value,
+              });
+            });
+        }
+
+        return data
+      }
+
+      function graph(column, key, referenceColumn) {
+        let data = [];
+        const columnKey = key.data.key
+        let chartValue = false
+        let chartColor = undefined
+        if(!!referenceColumn){
+          column = referenceColumn.columns[columnKey]
+          chartValue = true
+          chartColor = 1
+        } else if (referenceColumn === undefined) {
+          column = &quot;&quot;
+        }
+
+        if (column.histogram || column.frequentItems) {
+          data = chartData(column)
+        } else if (referenceColumn === null ) {
+            $(&quot;.svg-container&quot;).css(&quot;padding-bottom&quot;, &quot;0&quot;)
+            return &#x27;&lt;span class=&quot;wl-table-cell__bedge-wrap&quot;&gt;No data to show the chart&lt;/span&gt;&#x27;;
+        } else if (referenceColumn === undefined) {
+            $(document).ready(function() {
+              $(&quot;.reference-table-head&quot;).addClass(&quot;d-none&quot;)
+            });
+            return &#x27;&#x27;
+        } else if (referenceColumn.frequentItems === undefined){
+            return &#x27;&#x27;;
+        }
+        return `
+          &lt;div class=&quot;svg-container&quot;&gt;
+            ${generateChart(data, ...[,,], chartColor, chartValue)}
+          &lt;/div&gt;
+        `;
+      }
+
+      function formatLabelDate(timestamp) {
+        const date = new Date(timestamp);
+        const format = d3.timeFormat(&quot;%Y-%m-%d %I:%M:%S %p %Z&quot;);
+        return format(date);
+      }
+
+      const driftCountElement = (driftCount, driftColor, driftName, driftRange) =&gt; `
+      &lt;div class=&quot;display-flex flex-direction-column&quot;&gt;
+        &lt;div class=&quot;drift-detection-info-drifts-item display-flex align-items&quot;&gt;
+          &lt;div class=&quot;drift-detection-info-drifts-item-text display-flex align-items&quot;&gt;
+            &lt;p class=&quot;drift-detection-info-drifts-item-count mb-0&quot;&gt;${driftCount}&lt;/p&gt;
+            &lt;p class=&quot;drift-detection-info-drifts-item-range display-flex justify-content-center mb-0&quot;&gt;${driftRange}&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      `
+
+      const drifts = {
+        severe: {
+          count: 0,
+          range: &quot;with detected drift (0.00 - 0.05)&quot;,
+        },
+        moderate: {
+          count: 0,
+          range: &quot;with possible drift (0.05 - 0.15)&quot;,
+        },
+        mild: {
+          count: 0,
+          range: &quot;with no evidence of drift (0.15 - 1.0)&quot;,
+        }
+      };
+
+      const countOfDrifts = (driftNumber) =&gt; {
+        if(driftNumber &gt;= 0 &amp;&amp; driftNumber &lt;= 0.05) {
+          Object.values(drifts)[0].count++
+          return 0
+        } else if(driftNumber &gt; 0.05 &amp;&amp; driftNumber &lt;= 0.15) {
+          Object.values(drifts)[1].count++
+          return 1
+        } else if(driftNumber &gt; 0.15) {
+          Object.values(drifts)[2].count++
+          return 2
+        }
+
+      }
+
+    abbreviate_number = function(value, fixed = 0) {
+      value = +value
+      if (value === null) { return null; } // terminate early
+      if (value === 0) { return &#x27;0&#x27;; } // terminate early
+      fixed = (!fixed || fixed &lt; 0) ? 0 : fixed; // number of decimal places to show
+      var b = (value).toPrecision(2).split(&quot;e&quot;), // get power
+          k = b.length === 1 ? 0 : Math.floor(Math.min(b[1].slice(1), 14) / 3), // floor at decimals, ceiling at trillions
+          c = k &lt; 1 ? value.toFixed(0 + fixed) : (value / Math.pow(10, k * 3) ).toFixed(1 + fixed), // divide by power
+          d = c &lt; 0 ? c : Math.abs(c), // enforce -0 is 0
+          newValue = d,
+          suffixe = [&#x27;&#x27;, &#x27;K&#x27;, &#x27;M&#x27;, &#x27;B&#x27;, &#x27;T&#x27;][k]; // append power
+      return {value, newValue, suffixe};
+    }
+
+     function formatBytes(bytes, decimals = 2) {
+       let newValue,
+       suffixe = &quot;&quot;
+       if (bytes === 0) return &#x27;0 Bytes&#x27;;
+
+       const k = 1024;
+       const dm = decimals &lt; 0 ? 0 : decimals;
+       const sizes = [&#x27;Bytes&#x27;, &#x27;KiB&#x27;, &#x27;MB&#x27;, &#x27;GB&#x27;, &#x27;TB&#x27;, &#x27;PB&#x27;, &#x27;EB&#x27;, &#x27;ZB&#x27;, &#x27;YB&#x27;];
+
+       const i = Math.floor(Math.log(bytes) / Math.log(k));
+       newValue = parseFloat((bytes / Math.pow(k, i)).toFixed(dm));
+       suffixe = sizes[i]
+       return {bytes, newValue, suffixe};
+     }
+
+     const valueSuffixe = (newNumber) =&gt; `
+       &lt;div class=&quot;statistic-measurement&quot;&gt;
+        ${newNumber}
+       &lt;/div&gt;`
+     const valueNumber = (newNumber) =&gt; `
+       &lt;div class=&quot;statistic-number&quot;&gt;
+        ${newNumber}
+       &lt;/div&gt;`
+
+     const numberWithSuffixe = (number, newNumber, suffixe) =&gt;
+       `&lt;div class=&quot;tooltip-full-number&quot;&gt;
+          &lt;div class=&quot;statistic-number&quot;&gt;
+             ${newNumber}
+            &lt;div class=&quot;statistic-measurement&quot;&gt;${suffixe}&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;span class=&quot;tooltiptext&quot;&gt;${number}&lt;/span&gt;
+        &lt;/div&gt;`
+
+     Handlebars.registerHelper(&quot;observations&quot;, function (properties) {
+       const {value, newValue, suffixe} = abbreviate_number(referenceProfile.properties.observations)
+       return numberWithSuffixe(value, valueNumber(newValue), valueNumber(suffixe));
+     });
+
+     Handlebars.registerHelper(&quot;missingCells&quot;, function (properties) {
+       const {value, newValue, suffixe} = abbreviate_number(referenceProfile.properties.missing_cells)
+       if (typeof value !== &#x27;undefined&#x27; &amp;&amp; typeof newValue !== &#x27;undefined&#x27;  &amp;&amp; typeof suffixe !== &#x27;undefined&#x27; ) {
+        return numberWithSuffixe(value, valueSuffixe(`${newValue}`), suffixe);
+       }
+       return numberWithSuffixe(0, valueNumber(0), valueNumber(&#x27;&#x27;));
+     });
+
+     Handlebars.registerHelper(&quot;missingCellsPercentage&quot;, function (properties) {
+       const {value, newValue, suffixe} = abbreviate_number(referenceProfile.properties.missing_percentage)
+       if (typeof value !== &#x27;undefined&#x27; &amp;&amp; typeof newValue !== &#x27;undefined&#x27;  &amp;&amp; typeof suffixe !== &#x27;undefined&#x27; ) {
+        return numberWithSuffixe(value, valueSuffixe(`(${newValue}%)`), suffixe);
+       }
+       return numberWithSuffixe(0, valueSuffixe(`(${0}%)`), &#x27;&#x27;);
+     });
+
+     Handlebars.registerHelper(&quot;getProfileTimeStamp&quot;, function (properties) {
+       return formatLabelDate(+properties.properties.dataTimestamp)
+     });
+
+     Handlebars.registerHelper(&quot;getProfileName&quot;, function (properties) {
+       return properties.properties.tags.name
+     });
+
+      let driftCount = 0;
+      const diffFromRefTableElement = (driftFromRefNumber, circleColor) =&gt; `
+         &lt;div class=&quot;text-color padding-5 text-align-end justify-content-center&quot;&gt;
+           ${driftFromRefNumber}
+         &lt;/div&gt;
+       `
+
+       const cheqValueTypeNumber = (profile, profileValue) =&gt; {
+         let validValue;
+         if (profile &amp;&amp; profileValue !== undefined &amp;&amp; typeof profileValue === &quot;number&quot;) {
+           return true
+         } else if (profileValue !== undefined &amp;&amp; typeof profileValue !== &quot;number&quot;) {
+           return false
+         }
+       }
+
+
+       Handlebars.registerHelper(&quot;getpvalue&quot;, function (column, key) {
+        const columnKey = key.data.key
+        const {drift_from_ref} = referenceProfile.columns[columnKey]
+
+        if (cheqValueTypeNumber(referenceProfile, drift_from_ref)) {
+          const driftFromRefNumber = drift_from_ref.toPrecision(2)
+          return Number(driftFromRefNumber)
+
+        }
+      });
+
+      Handlebars.registerHelper(&quot;getDiffFromRef&quot;, function (column, key) {
+        const columnKey = key.data.key
+        const {drift_from_ref} = referenceProfile.columns[columnKey]
+
+        if (cheqValueTypeNumber(referenceProfile, drift_from_ref)) {
+          const driftFromRefNumber = drift_from_ref.toPrecision(2)
+          const driftCategory = countOfDrifts(driftFromRefNumber)
+          const circleColor = Object.values(drifts)[driftCategory].colorClass
+          if (driftCategory==0 || driftCategory == 1){
+            driftCount++
+          }
+          $(document).ready(() =&gt; {
+             $(&quot;.drift-count&quot;).html(driftCount)
+             $(&quot;.all-features&quot;).html(Object.keys(referenceProfile.columns).length)
+           })
+
+          return diffFromRefTableElement(driftFromRefNumber, circleColor)
+
+        } else if (cheqValueTypeNumber(referenceProfile, drift_from_ref) !== undefined) {
+          Object.values(drifts)[0].count++
+          return diffFromRefTableElement(&quot;undefined&quot;, &quot;severe-drift-circle-color&quot;)
+        }
+
+        return &#x27;&lt;p style=&quot;color: black&quot;&gt;-&lt;/p&gt;&#x27;;
+      });
+
+      $(document).ready(() =&gt;
+        Object.values(drifts).map(({count, name, colorClass, range}) =&gt;{
+          $(&quot;#drift-detection-info-drifts&quot;)
+          .append(driftCountElement(count, colorClass, name, range))
+        })
+      )
+
+      Handlebars.registerHelper(&quot;inferredType&quot;, function (column) {
+        let infferedType = &quot;&quot;;
+
+        if (column.isDiscrete) {
+          infferedType = &quot;Discrete&quot;;
+        } else {
+          infferedType = &quot;Non-discrete&quot;;
+        }
+        return infferedType;
+      });
+
+      Handlebars.registerHelper(&quot;frequentItems&quot;, function (column) {
+        frequentItemsElemString = &quot;&quot;;
+        if (column.isDiscrete) {
+          const slicedFrequentItems = column.frequentItems.items.slice(0, 5);
+          for (let fi = 0; fi &lt; slicedFrequentItems.length; fi++) {
+            frequentItemsElemString +=
+              &#x27;&lt;span class=&quot;wl-table-cell__bedge&quot;&gt;&#x27; + slicedFrequentItems[fi].jsonValue + &quot;&lt;/span&gt;&quot;;
+          }
+        } else {
+          frequentItemsElemString += &quot;No data to show&quot;;
+        }
+        return frequentItemsElemString;
+      });
+
+      Handlebars.registerHelper(&quot;totalCount&quot;, function (column) {
+        if (column.featureStats) {
+          return column.featureStats.total_count;
+        }
+
+        return &quot;-&quot;;
+      });
+
+      Handlebars.registerHelper(&quot;mean&quot;, function (column) {
+        if (column.featureStats?.descriptive_statistics) {
+          return fixNumberTo(column.featureStats.descriptive_statistics.mean);
+        }
+        return &quot;-&quot;;
+      });
+
+      Handlebars.registerHelper(&quot;getGraphHtml&quot;,(column,key) =&gt; graph(column, key, null));
+      Handlebars.registerHelper(&quot;getReferenceGraphHtml&quot;,(column,key) =&gt; graph(column, key, referenceProfile));
+
+      Handlebars.registerHelper(&quot;getDiscreteTypeCount&quot;, function () {
+        let count = 0;
+
+        Object.entries(this.columns).forEach((feature) =&gt; {
+          if (feature[1].isDiscrete === true) {
+            count++;
+          }
+        });
+        return count.toString();
+      });
+
+      Handlebars.registerHelper(&quot;getNonDiscreteTypeCount&quot;, function () {
+        let count = 0;
+
+        Object.entries(this.columns).forEach((feature) =&gt; {
+          if (feature[1].isDiscrete === false) {
+            count++;
+          }
+        });
+        return count;
+      });
+
+      Handlebars.registerHelper(&quot;getUnknownTypeCount&quot;, function () {
+        let count = 0;
+        return count;
+        Object.entries(this.columns).forEach((feature) =&gt; {
+          if (!feature[1].isDiscrete) {
+            count++;
+          }
+        });
+        return count;
+      });
+    }
+
+    function initHandlebarsTemplate() {
+      // Replace this context with JSON from .py file
+      const context = {&quot;columns&quot;: {&quot;Temperature&quot;: {&quot;histogram&quot;: {&quot;start&quot;: 19.79, &quot;end&quot;: 24.408335774166634, &quot;width&quot;: 0, &quot;counts&quot;: [16, 98, 209, 302, 254, 454, 198, 408, 152, 344, 124, 140, 298, 56, 104, 312, 164, 76, 72, 20, 24, 16, 8, 4, 4, 8, 0, 12, 8, 8], &quot;max&quot;: 24.4083333333333, &quot;min&quot;: 19.79, &quot;bins&quot;: [19.79, 19.943944525805552, 20.09788905161111, 20.25183357741666, 20.405778103222218, 20.55972262902777, 20.713667154833328, 20.86761168063888, 21.021556206444433, 21.17550073224999, 21.329445258055543, 21.4833897838611, 21.637334309666652, 21.79127883547221, 21.945223361277762, 22.09916788708332, 22.25311241288887, 22.407056938694424, 22.56100146449998, 22.714945990305534, 22.86889051611109, 23.022835041916643, 23.1767795677222, 23.330724093527753, 23.484668619333306, 23.638613145138862, 23.792557670944415, 23.946502196749968, 24.100446722555525, 24.25439124836108, 24.408335774166634], &quot;n&quot;: 3893}, &quot;frequentItems&quot;: null, &quot;drift_from_ref&quot;: null, &quot;isDiscrete&quot;: false, &quot;featureStats&quot;: {&quot;total_count&quot;: 3893, &quot;missing&quot;: 0, &quot;distinct&quot;: 6.524535309440502, &quot;min&quot;: 19.79, &quot;max&quot;: 24.4083333333333, &quot;range&quot;: 4.6183333333333, &quot;quantile_statistics&quot;: {&quot;fifth_percentile&quot;: 20.2, &quot;iqr&quot;: 1.1674999999999969, &quot;q1&quot;: 20.6, &quot;median&quot;: 21.05, &quot;q3&quot;: 21.7675, &quot;ninety_fifth_percentile&quot;: 22.525}, &quot;descriptive_statistics&quot;: {&quot;stddev&quot;: 0.7917481483775746, &quot;coefficient_of_variation&quot;: 0.037322770115549055, &quot;sum&quot;: 82584.31869047656, &quot;variance&quot;: 0.6268651304593178, &quot;mean&quot;: 21.21354191895108}}}, &quot;Humidity&quot;: {&quot;histogram&quot;: {&quot;start&quot;: 18.39, &quot;end&quot;: 28.50000285, &quot;width&quot;: 0, &quot;counts&quot;: [183, 278, 232, 136, 168, 116, 148, 154, 244, 66, 28, 12, 40, 52, 52, 88, 124, 180, 180, 320, 192, 168, 152, 140, 116, 148, 100, 28, 8, 40], &quot;max&quot;: 28.5, &quot;min&quot;: 18.39, &quot;bins&quot;: [18.39, 18.727000095, 19.06400019, 19.401000285000002, 19.73800038, 20.075000475, 20.41200057, 20.749000665, 21.08600076, 21.423000855, 21.760000950000002, 22.097001045, 22.43400114, 22.771001235, 23.10800133, 23.445001425, 23.78200152, 24.119001615000002, 24.456001710000002, 24.793001805, 25.1300019, 25.467001995, 25.80400209, 26.141002185, 26.47800228, 26.815002375, 27.15200247, 27.489002565, 27.82600266, 28.163002755, 28.50000285], &quot;n&quot;: 3893}, &quot;frequentItems&quot;: null, &quot;drift_from_ref&quot;: null, &quot;isDiscrete&quot;: false, &quot;featureStats&quot;: {&quot;total_count&quot;: 3893, &quot;missing&quot;: 0, &quot;distinct&quot;: 19.558239266091203, &quot;min&quot;: 18.39, &quot;max&quot;: 28.5, &quot;range&quot;: 10.11, &quot;quantile_statistics&quot;: {&quot;fifth_percentile&quot;: 18.745, &quot;iqr&quot;: 5.356666666666701, &quot;q1&quot;: 20.0, &quot;median&quot;: 23.6, &quot;q3&quot;: 25.3566666666667, &quot;ninety_fifth_percentile&quot;: 27.1}, &quot;descriptive_statistics&quot;: {&quot;stddev&quot;: 2.914183755635273, &quot;coefficient_of_variation&quot;: 0.12725277211527536, &quot;sum&quot;: 89152.6146904762, &quot;variance&quot;: 8.492466961608503, &quot;mean&quot;: 22.900748700353507}}}, &quot;Light&quot;: {&quot;histogram&quot;: {&quot;start&quot;: 0.0, &quot;end&quot;: 1697.250169725, &quot;width&quot;: 0, &quot;counts&quot;: [2465, 20, 0, 0, 2, 4, 6, 552, 554, 164, 42, 16, 24, 28, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], &quot;max&quot;: 1697.25, &quot;min&quot;: 0.0, &quot;bins&quot;: [0.0, 56.5750056575, 113.150011315, 169.7250169725, 226.30002263, 282.8750282875, 339.450033945, 396.0250396025, 452.60004526, 509.1750509175, 565.750056575, 622.3250622325, 678.90006789, 735.4750735475, 792.050079205, 848.6250848625, 905.20009052, 961.7750961775, 1018.350101835, 1074.9251074925, 1131.50011315, 1188.0751188075, 1244.650124465, 1301.2251301225, 1357.80013578, 1414.3751414375, 1470.950147095, 1527.5251527525, 1584.10015841, 1640.6751640675, 1697.250169725], &quot;n&quot;: 3893}, &quot;frequentItems&quot;: null, &quot;drift_from_ref&quot;: null, &quot;isDiscrete&quot;: false, &quot;featureStats&quot;: {&quot;total_count&quot;: 3893, &quot;missing&quot;: 0, &quot;distinct&quot;: 12.478007547635448, &quot;min&quot;: 0.0, &quot;max&quot;: 1697.25, &quot;range&quot;: 1697.25, &quot;quantile_statistics&quot;: {&quot;fifth_percentile&quot;: 0.0, &quot;iqr&quot;: 444.0, &quot;q1&quot;: 0.0, &quot;median&quot;: 0.0, &quot;q3&quot;: 444.0, &quot;ninety_fifth_percentile&quot;: 535.5}, &quot;descriptive_statistics&quot;: {&quot;stddev&quot;: 238.14413844971176, &quot;coefficient_of_variation&quot;: 1.354768230517747, &quot;sum&quot;: 684320.1000000001, &quot;variance&quot;: 56712.63067795549, &quot;mean&quot;: 175.782198818392}}}, &quot;CO2&quot;: {&quot;histogram&quot;: {&quot;start&quot;: 423.0, &quot;end&quot;: 1213.750121375, &quot;width&quot;: 0, &quot;counts&quot;: [1001, 688, 292, 160, 140, 62, 64, 80, 84, 56, 58, 60, 50, 98, 116, 94, 92, 94, 60, 66, 42, 32, 56, 96, 108, 68, 44, 20, 8, 4], &quot;max&quot;: 1213.75, &quot;min&quot;: 423.0, &quot;bins&quot;: [423.0, 449.35833737916664, 475.71667475833334, 502.0750121375, 528.4333495166667, 554.7916868958333, 581.150024275, 607.5083616541666, 633.8666990333334, 660.2250364125, 686.5833737916666, 712.9417111708333, 739.3000485499999, 765.6583859291666, 792.0167233083332, 818.3750606875, 844.7333980666666, 871.0917354458333, 897.450072825, 923.8084102041666, 950.1667475833333, 976.5250849624999, 1002.8834223416666, 1029.2417597208332, 1055.6000970999999, 1081.9584344791665, 1108.3167718583331, 1134.6751092374998, 1161.0334466166664, 1187.391783995833, 1213.750121375], &quot;n&quot;: 3893}, &quot;frequentItems&quot;: null, &quot;drift_from_ref&quot;: null, &quot;isDiscrete&quot;: false, &quot;featureStats&quot;: {&quot;total_count&quot;: 3893, &quot;missing&quot;: 0, &quot;distinct&quot;: 45.32892693146005, &quot;min&quot;: 423.0, &quot;max&quot;: 1213.75, &quot;range&quot;: 790.75, &quot;quantile_statistics&quot;: {&quot;fifth_percentile&quot;: 433.5, &quot;iqr&quot;: 350.0, &quot;q1&quot;: 449.0, &quot;median&quot;: 498.0, &quot;q3&quot;: 799.0, &quot;ninety_fifth_percentile&quot;: 1070.75}, &quot;descriptive_statistics&quot;: {&quot;stddev&quot;: 219.26567637281946, &quot;coefficient_of_variation&quot;: 0.35171546814748694, &quot;sum&quot;: 2426965.4178571426, &quot;variance&quot;: 48077.43683522999, &quot;mean&quot;: 623.4177800814648}}}, &quot;HumidityRatio&quot;: {&quot;histogram&quot;: {&quot;start&quot;: 0.002674126913904, &quot;end&quot;: 0.004936203700745221, &quot;width&quot;: 0, &quot;counts&quot;: [243, 238, 134, 82, 222, 212, 132, 126, 144, 114, 118, 158, 170, 212, 288, 148, 192, 80, 80, 40, 52, 132, 156, 116, 108, 52, 36, 68, 32, 8], &quot;max&quot;: 0.0049362032071249, &quot;min&quot;: 0.002674126913904, &quot;bins&quot;: [0.002674126913904, 0.002749529473465374, 0.002824932033026748, 0.002900334592588122, 0.002975737152149496, 0.00305113971171087, 0.003126542271272244, 0.003201944830833618, 0.0032773473903949923, 0.003352749949956366, 0.0034281525095177403, 0.003503555069079114, 0.0035789576286404884, 0.0036543601882018622, 0.003729762747763236, 0.0038051653073246103, 0.0038805678668859846, 0.003955970426447358, 0.004031372986008732, 0.0041067755455701065, 0.004182178105131481, 0.004257580664692855, 0.004332983224254228, 0.004408385783815603, 0.004483788343376977, 0.00455919090293835, 0.0046345934624997245, 0.004709996022061099, 0.004785398581622472, 0.004860801141183847, 0.004936203700745221], &quot;n&quot;: 3893}, &quot;frequentItems&quot;: null, &quot;drift_from_ref&quot;: null, &quot;isDiscrete&quot;: false, &quot;featureStats&quot;: {&quot;total_count&quot;: 3893, &quot;missing&quot;: 0, &quot;distinct&quot;: 50.56824369683529, &quot;min&quot;: 0.002674126913904, &quot;max&quot;: 0.0049362032071249, &quot;range&quot;: 0.0022620762932209, &quot;quantile_statistics&quot;: {&quot;fifth_percentile&quot;: 0.0027407960440997, &quot;iqr&quot;: 0.0008863156797625001, &quot;q1&quot;: 0.0030636333032614, &quot;median&quot;: 0.0035891122332562, &quot;q3&quot;: 0.0039499489830239, &quot;ninety_fifth_percentile&quot;: 0.0045730503494798}, &quot;descriptive_statistics&quot;: {&quot;stddev&quot;: 0.0005845419224971159, &quot;coefficient_of_variation&quot;: 0.16322581181793552, &quot;sum&quot;: 13.941555437442297, &quot;variance&quot;: 3.416892591566242e-07, &quot;mean&quot;: 0.0035811855734503716}}}, &quot;Occupancy&quot;: {&quot;histogram&quot;: {&quot;start&quot;: 0.0, &quot;end&quot;: 1.0000001, &quot;width&quot;: 0, &quot;counts&quot;: [2645, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1248], &quot;max&quot;: 1.0, &quot;min&quot;: 0.0, &quot;bins&quot;: [0.0, 0.03333333666666667, 0.06666667333333334, 0.10000001000000001, 0.13333334666666669, 0.16666668333333334, 0.20000002000000003, 0.2333333566666667, 0.26666669333333337, 0.30000003000000003, 0.3333333666666667, 0.3666667033333334, 0.40000004000000006, 0.4333333766666667, 0.4666667133333334, 0.50000005, 0.5333333866666667, 0.5666667233333335, 0.6000000600000001, 0.6333333966666668, 0.6666667333333334, 0.7000000700000001, 0.7333334066666668, 0.7666667433333334, 0.8000000800000001, 0.8333334166666668, 0.8666667533333334, 0.9000000900000001, 0.9333334266666669, 0.9666667633333335, 1.0000001], &quot;n&quot;: 3893}, &quot;frequentItems&quot;: null, &quot;drift_from_ref&quot;: null, &quot;isDiscrete&quot;: false, &quot;featureStats&quot;: {&quot;total_count&quot;: 3893, &quot;missing&quot;: 0, &quot;distinct&quot;: 0.051374261622580374, &quot;min&quot;: 0.0, &quot;max&quot;: 1.0, &quot;range&quot;: 1.0, &quot;quantile_statistics&quot;: {&quot;fifth_percentile&quot;: 0.0, &quot;iqr&quot;: 1.0, &quot;q1&quot;: 0.0, &quot;median&quot;: 0.0, &quot;q3&quot;: 1.0, &quot;ninety_fifth_percentile&quot;: 1.0}, &quot;descriptive_statistics&quot;: {&quot;stddev&quot;: 0.46636135092770786, &quot;coefficient_of_variation&quot;: 1.459441108650777, &quot;sum&quot;: 1244.0, &quot;variance&quot;: 0.21749290963911666, &quot;mean&quot;: 0.31954790649884407}}}}, &quot;properties&quot;: null};
+      // Config handlebars and pass data to HBS template
+      const source = document.getElementById(&quot;entry-template&quot;).innerHTML;
+      const template = Handlebars.compile(source);
+      const html = template(context);
+      const target = document.getElementById(&quot;generated-html&quot;);
+      target.innerHTML = html;
+    }
+
+    function initWebsiteScripts() {
+      const $featureSearch = document.getElementById(&quot;wl__feature-search&quot;);
+      const $tableBody = document.getElementById(&quot;table-body&quot;);
+      const $discrete = document.getElementById(&quot;inferredDiscrete&quot;);
+      const $nonDiscrete = document.getElementById(&quot;inferredNonDiscrete&quot;);
+      const $unknown = document.getElementById(&quot;inferredUnknown&quot;);
+      const $diffFromRef = document.getElementById(&quot;diff-from-ref&quot;);
+
+      const activeTypes = {
+        discrete: true,
+        &quot;non-discrete&quot;: true,
+        unknown: true,
+      };
+
+      var driftOrder = {
+        original: true,
+        descending: false,
+        ascending: false,
+      };
+      var originalColumnOrder;
+
+      let searchString = &quot;&quot;;
+
+      function debounce(func, wait, immediate) {
+        let timeout;
+
+        return function () {
+          const context = this;
+          const args = arguments;
+          const later = function () {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+          };
+
+          const callNow = immediate &amp;&amp; !timeout;
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+          if (callNow) func.apply(context, args);
+        };
+      }
+
+      function filterNotification() {
+        const $notifCircleContainer = $(&quot;.notif-circle-container&quot;)
+        const $boxes = $(&#x27;.wl_filter-options&gt;.form-check&gt;input[name=checkbox]:checked&#x27;);
+        const item = Object.values($boxes).find(function(value) { return $(value)[0] === undefined});
+        if (item === undefined) {
+          $notifCircleContainer.removeClass(&quot;d-none&quot;)
+        } else {
+          $notifCircleContainer.addClass(&quot;d-none&quot;)
+        }
+      }
+
+
+      function orderByDrift(direction) {
+        var tableBodyChildren = $tableBody.children;
+        if (driftOrder[&#x27;original&#x27;]) {
+          driftOrder[&#x27;original&#x27;] = false
+          driftOrder[&#x27;descending&#x27;] = true
+
+          originalColumnOrder = [...tableBodyChildren];
+          tableBodyChildren = [...tableBodyChildren].sort((a,b) =&gt; (b.dataset.pValue - a.dataset.pValue))
+          document.getElementById(&quot;pvalue&quot;).style.display = &quot;none&quot;;
+          document.getElementById(&quot;pvalue-desc&quot;).style.display = &quot;&quot;;
+
+        } else if (driftOrder[&#x27;descending&#x27;]) {
+          driftOrder[&#x27;descending&#x27;] = false
+          driftOrder[&#x27;ascending&#x27;] = true
+          tableBodyChildren = [...tableBodyChildren].sort((a,b) =&gt; (a.dataset.pValue - b.dataset.pValue))
+          document.getElementById(&quot;pvalue-desc&quot;).style.display = &quot;none&quot;;
+          document.getElementById(&quot;pvalue-asc&quot;).style.display = &quot;&quot;;
+
+
+        } else if (driftOrder[&#x27;ascending&#x27;]) {
+          driftOrder[&#x27;ascending&#x27;] = false
+          driftOrder[&#x27;original&#x27;] = true
+
+          tableBodyChildren = originalColumnOrder;
+          document.getElementById(&quot;pvalue-asc&quot;).style.display = &quot;none&quot;;
+          document.getElementById(&quot;pvalue&quot;).style.display = &quot;&quot;;
+
+        }
+
+        for (let i = 0; i &lt; tableBodyChildren.length; i++) {
+          console.log(tableBodyChildren[i].dataset.pValue)
+        }
+        for (var i = 0; i &lt; tableBodyChildren.length; i++){$tableBody.append(tableBodyChildren[i])}
+      }
+
+
+      function handleSearch() {
+        const tableBodyChildren = $tableBody.children;
+
+        for (let i = 0; i &lt; tableBodyChildren.length; i++) {
+          const type = tableBodyChildren[i].dataset.inferredType.toLowerCase();
+          const name = tableBodyChildren[i].dataset.featureName.toLowerCase();
+          if (activeTypes[type] &amp;&amp; name.startsWith(searchString)) {
+            tableBodyChildren[i].style.display = &quot;&quot;;
+          } else {
+            tableBodyChildren[i].style.display = &quot;none&quot;;
+          }
+        }
+      }
+
+      $featureSearch.addEventListener(
+        &quot;keyup&quot;,
+        debounce((event) =&gt; {
+          searchString = event.target.value.toLowerCase();
+          handleSearch();
+        }, 100),
+      );
+
+      $diffFromRef.addEventListener(
+        &quot;click&quot;,
+        debounce((event) =&gt; {
+          orderByDrift();
+        }, 100),
+      );
+
+      $discrete.addEventListener(&quot;change&quot;, (event) =&gt; {
+        if (event.currentTarget.checked) {
+          activeTypes[&quot;discrete&quot;] = true;
+        } else {
+          activeTypes[&quot;discrete&quot;] = false;
+        }
+        handleSearch();
+        filterNotification()
+      });
+
+      $nonDiscrete.addEventListener(&quot;change&quot;, (event) =&gt; {
+        if (event.currentTarget.checked) {
+          activeTypes[&quot;non-discrete&quot;] = true;
+        } else {
+          activeTypes[&quot;non-discrete&quot;] = false;
+        }
+        handleSearch();
+        filterNotification()
+      });
+
+      $unknown.addEventListener(&quot;change&quot;, (event) =&gt; {
+        if (event.currentTarget.checked) {
+          activeTypes[&quot;unknown&quot;] = true;
+        } else {
+          activeTypes[&quot;unknown&quot;] = false;
+        }
+        handleSearch();
+        filterNotification()
+      });
+
+      function checkCurrentProfile(item, referenceItem) {
+        if (referenceProfile &amp;&amp; Object.values(referenceProfile)) {
+          return referenceItem
+        } else {
+          return item
+        }
+      }
+
+      if(checkCurrentProfile(true, false)) {
+        $(&quot;.svg-container&quot;).css(&quot;padding-bottom&quot;, &quot;27%&quot;)
+        $(&quot;#diff-from-ref&quot;).addClass(&quot;d-none&quot;)
+        $(&quot;.diff-from-ref-table-cell&quot;).addClass(&quot;d-none&quot;)
+      } else {
+        $(&quot;#diff-from-ref&quot;).removeClass(&quot;d-none&quot;)
+        $(&quot;.diff-from-ref-table-cell&quot;).removeClass(&quot;d-none&quot;)
+      }
+    }
+
+    function checkedBoxes() {
+      const $boxes = $(&#x27;input[name=checkbox]:checked&#x27;);
+      const $notifCircleContainer = $(&quot;.notif-circle-container&quot;)
+
+      if ($boxes.length) {
+        $notifCircleContainer.removeClass(&quot;d-none&quot;)
+      }
+    }
+
+    function openFilter() {
+      const $filterOptions = $(&quot;.dropdown-container&quot;);
+      const $notifCircleContainer = $(&quot;.notif-circle-container&quot;)
+      const filterClass = $filterOptions.attr(&quot;class&quot;);
+
+      if (filterClass.indexOf(&quot;d-none&quot;) &gt; 0) {
+        $notifCircleContainer.addClass(&quot;d-none&quot;)
+        $filterOptions.removeClass(&quot;d-none&quot;);
+        $(&quot;.filter-icon&quot;).addClass(&quot;d-none&quot;)
+        $(&quot;.close-filter-icon&quot;).removeClass(&quot;d-none&quot;)
+      } else {
+        $filterOptions.addClass(&quot;d-none&quot;);
+        $(&quot;.close-filter-icon&quot;).addClass(&quot;d-none&quot;)
+        $(&quot;.filter-icon&quot;).removeClass(&quot;d-none&quot;)
+        checkedBoxes()
+      }
+    }
+
+    // Invoke functions -- keep in mind invokation order
+    registerHandlebarHelperFunctions();
+    initHandlebarsTemplate();
+    initWebsiteScripts();
+  &lt;/script&gt;
+&lt;/html&gt;
+" width=100% height=1000px
+        frameBorder=0></iframe>
